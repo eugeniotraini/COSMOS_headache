@@ -1,0 +1,171 @@
+### Headache analysis in COSMOS NL, UK ### v9 September 2023
+
+library(readxl)
+library(haven)
+library(readr)
+library(plyr)
+library(dplyr)
+library(mice)
+
+# Load imp_data_analysis // MICE object
+
+### MAIN ANALYSES RC-hfa
+
+### FULLY ADJUSTED MODELS ###
+
+lr1 <- with(data=imp_data_analysis, exp=glm(weekly_head_fup~relevel(RC_hf_perc,ref='2')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr1), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:4),-1],2)
+
+#Calculate linear trend
+lr1 <- with(data=imp_data_analysis, exp=glm(weekly_head_fup~as.ordered(RC_hf_perc)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
+lr2 <- with(data=imp_data_analysis, exp=glm(severe_weekly_head_fup~relevel(RC_hf_perc,ref='2')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr2), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:4),-1],2)
+
+#Calculate linear trend
+lr2 <- with(data=imp_data_analysis, exp=glm(severe_weekly_head_fup~as.ordered(RC_hf_perc)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr2)) #check f.L (linear trend)
+
+lr3 <- with(data=imp_data_analysis, exp=glm(daily_head_fup~relevel(RC_hf_perc,ref='2')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr3), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:4),-1],2)
+
+#Calculate linear trend
+lr3 <- with(data=imp_data_analysis, exp=glm(daily_head_fup~as.ordered(RC_hf_perc)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr3)) #check f.L (linear trend)
+
+###
+
+### MIGRAINE MODELS ###
+
+### FULLY ADJUSTED MODELS ###
+
+lr1 <- with(data=imp_data_analysis, exp=glm(edomg~relevel(RC_hf_perc,ref='2')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr1), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:4),-1],2)
+
+#Calculate linear trend
+lr1 <- with(data=imp_data_analysis, exp=glm(edomg~as.ordered(RC_hf_perc)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
+### RC_hfa and SMS in the same model ###
+
+### FULLY ADJUSTED MODELS ###
+
+lr1 <- with(data=imp_data_analysis, exp=glm(weekly_head_fup~relevel(RC_hf_perc,ref='2')+relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr1), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:4),-1],2)
+
+lr2 <- with(data=imp_data_analysis, exp=glm(severe_weekly_head_fup~relevel(RC_hf_perc,ref='2')+relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr2), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:4),-1],2)
+
+lr3 <- with(data=imp_data_analysis, exp=glm(daily_head_fup~relevel(RC_hf_perc,ref='2')+relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr3), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:4),-1],2)
+
+#Calculate linear trend
+lr1 <- with(data=imp_data_analysis, exp=glm(weekly_head_fup~as.ordered(RC_hf_perc)+as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
+lr1 <- with(data=imp_data_analysis, exp=glm(severe_weekly_head_fup~as.ordered(RC_hf_perc)+as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
+lr1 <- with(data=imp_data_analysis, exp=glm(daily_head_fup~as.ordered(RC_hf_perc)+as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
+#Migraine analysis bnxsms_rec
+
+### FULLY ADJUSTED MODELS ###
+
+lr1 <- with(data=imp_data_analysis, exp=glm(edomg~relevel(RC_hf_perc,ref='2')+relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr1), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:4),-1],2)
+
+#Calculate linear trend
+lr1 <- with(data=imp_data_analysis, exp=glm(edomg~as.ordered(RC_hf_perc)+as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
+### MAIN ANALYSES texting
+
+### FULLY ADJUSTED MODELS ###
+
+lr1 <- with(data=imp_data_analysis, exp=glm(weekly_head_fup~relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr1), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:3),-1],2)
+
+#Calculate linear trend
+lr1 <- with(data=imp_data_analysis, exp=glm(weekly_head_fup~as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
+lr2 <- with(data=imp_data_analysis, exp=glm(severe_weekly_head_fup~relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr2), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:3),-1],2)
+
+#Calculate linear trend
+lr2 <- with(data=imp_data_analysis, exp=glm(severe_weekly_head_fup~as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr2)) #check f.L (linear trend)
+
+lr3 <- with(data=imp_data_analysis, exp=glm(daily_head_fup~relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr3), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:3),-1],2)
+
+#Calculate linear trend
+lr3 <- with(data=imp_data_analysis, exp=glm(daily_head_fup~as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr3)) #check f.L (linear trend)
+
+###
+
+### MIGRAINE MODELS ###
+
+### FULLY ADJUSTED MODELS ###
+
+lr1 <- with(data=imp_data_analysis, exp=glm(edomg~relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr1), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(2:3),-1],2)
+
+#Calculate linear trend
+lr1 <- with(data=imp_data_analysis, exp=glm(edomg~as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
+### RC_hfa and SMS in the same model ###
+
+### FULLY ADJUSTED MODELS ###
+
+lr1 <- with(data=imp_data_analysis, exp=glm(weekly_head_fup~relevel(RC_hf_perc,ref='2')+relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr1), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(5:6),-1],2)
+
+lr2 <- with(data=imp_data_analysis, exp=glm(severe_weekly_head_fup~relevel(RC_hf_perc,ref='2')+relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr2), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(5:6),-1],2)
+
+lr3 <- with(data=imp_data_analysis, exp=glm(daily_head_fup~relevel(RC_hf_perc,ref='2')+relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr3), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(5:6),-1],2)
+
+#Calculate linear trend
+lr1 <- with(data=imp_data_analysis, exp=glm(weekly_head_fup~as.ordered(RC_hf_perc)+as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
+lr1 <- with(data=imp_data_analysis, exp=glm(severe_weekly_head_fup~as.ordered(RC_hf_perc)+as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
+lr1 <- with(data=imp_data_analysis, exp=glm(daily_head_fup~as.ordered(RC_hf_perc)+as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
+#Migraine analysis bnxsms_rec
+
+### FULLY ADJUSTED MODELS ###
+
+lr1 <- with(data=imp_data_analysis, exp=glm(edomg~relevel(RC_hf_perc,ref='2')+relevel(bnxsms_rec,ref='0')+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary <- summary(pool(lr1), conf.int = TRUE, exponentiate = TRUE)
+round(summary[c(5:6),-1],2)
+
+#Calculate linear trend
+lr1 <- with(data=imp_data_analysis, exp=glm(edomg~as.ordered(RC_hf_perc)+as.ordered(bnxsms_rec)+age_group+bsex+country+edu+BMI_group+bhealth_rec+SLPD4+pk+dep+hbp+bsmoking+balcohol, family = binomial))
+summary(pool(lr1)) #check f.L (linear trend)
+
